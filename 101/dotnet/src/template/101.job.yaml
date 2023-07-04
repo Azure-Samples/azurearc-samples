@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dotnet-hello-world
+spec:
+  template:
+    spec:
+      containers:
+      - name: dotnet-hello-world
+        image: docker.io/iwangjintianwork/dotnet-hello-world:2.0
+      restartPolicy: Never
+  backoffLimit: 4
