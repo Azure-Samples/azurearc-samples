@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-    for i := 0; i <= 100; i++ {
+    for i := 0; true; i++ {
         fmt.Println(i)
         time.Sleep(time.Second)
     }
