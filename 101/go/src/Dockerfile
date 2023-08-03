@@ -1,4 +1,4 @@
-# This is a possible Dockerfile for the go code sample that counts from 1 to 100
+# This is a Dockerfile for the go code sample that counts from 0 to infinite 
 FROM golang:1.17-alpine
 WORKDIR /src
 COPY Program.go .
