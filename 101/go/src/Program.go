@@ -1,4 +1,4 @@
-// This is a go code sample that counts from 1 to 100
+// This is a go code sample that counts from 0 to inifnite
 package main
 
 import (
