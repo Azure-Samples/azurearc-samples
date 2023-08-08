@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "ArcK8sName": {
+        "value": "aksee"
+      },
+      "location": {
+        "value": "eastasia"
+      },
+      "VaultName": {
+        "value": "xdlitestkv"
+      },
+      "appid": {
+        "value": "56274f11-505d-4003-91da-ab735df381ec"
+      },
+      "objid": {
+        "value": "8c51ce64-8f56-4518-becf-2ad6408217cb"
+      },
+      "acrName": {
+        "value": "xdlacr"
+      },
+      "tokenName": {
+        "value": "testtoken"
+      }
+    }
+  }
+  
