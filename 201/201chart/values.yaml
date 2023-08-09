@@ -14,7 +14,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-keyvaultName: "jessekv"
-keyvaultSecretName: "jesseACRToken"
-secretName: "secrets-store-creds"
-tenantId: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+keyvaultName: "fill in the key vault name"
+keyvaultSecretName: "fill in the secret name in key vault"
+secretName: "fill in the secret name generated using 'kubectl create secret' command"
+tenantId: "fill in the tenant id of subscription"
