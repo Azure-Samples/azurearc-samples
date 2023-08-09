@@ -14,7 +14,7 @@ spec:
         {{- include "201chart.selectorLabels" . | nindent 8 }}
     spec:
       imagePullSecrets:
-      - name: credentialForACR
+      - name: credentialforacr
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

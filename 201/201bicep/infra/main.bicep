@@ -53,7 +53,10 @@ resource symbolicname 'Microsoft.KubernetesConfiguration/extensions@2022-11-01' 
   properties: {
     autoUpgradeMinorVersion: true
     configurationProtectedSettings: {}
-    configurationSettings: {}
+    configurationSettings: {
+      'secrets-store-csi-driver.syncSecret.enabled' : 'true'
+      'secrets-store-csi-driver.enableSecretRotation' : 'false'
+    }
     extensionType: 'Microsoft.AzureKeyVaultSecretsProvider'
     releaseTrain: 'Stable'
     scope: {
