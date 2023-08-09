@@ -3,25 +3,25 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "ArcK8sName": {
-        "value": "aksee"
+        "value": "fill in Arc enabled kubernetes name"
       },
       "location": {
-        "value": "eastasia"
+        "value": "fill in location of Arc enabled kubernetes cluster"
       },
       "VaultName": {
-        "value": "xdlitestkv"
+        "value": "fill in the name of key vault"
       },
       "appid": {
-        "value": "56274f11-505d-4003-91da-ab735df381ec"
+        "value": "fill in the application id of service principal"
       },
       "objid": {
-        "value": "8c51ce64-8f56-4518-becf-2ad6408217cb"
+        "value": "fill in the object id of service principal"
       },
       "acrName": {
-        "value": "xdlacr"
+        "value": "fill in the name of Azure container registry where hold images"
       },
       "tokenName": {
-        "value": "testtoken"
+        "value": "fill in the name of ACR token"
       }
     }
   }
