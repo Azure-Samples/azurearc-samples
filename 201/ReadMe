@@ -4,7 +4,7 @@
 This sample shows you how to use utilize Azure Key Vault, Azure Container Registry and Azure Arc enabled Key Vault Extension to dynamically pull ACR credentials from AKV and pull image from ACR.
 ## Prerequisites
 * Compatible cluster
-* AZD
+* <a href = "https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/reference">AZD</a>
 
 ## Steps
 
@@ -19,14 +19,22 @@ kubectl create secret generic secrets-store-creds --from-literal clientid="<clie
 kubectl label secret secrets-store-creds secrets-store.csi.k8s.io/used=true
 ```
 * Install prerequites AKV (acess policy), ACR (Token) and Azure Arc enabled Key Vault Extension. <br />
-Fill in the 201\infra\main.parameters.json file and  deploy the bicep template 
+Fill in the 201\201bicep\infra\main.parameters.json file and deploy the bicep template using the below command in folder 201\201bicep
 ```powershell
 azd provision
 ```
 * (Optional) Skip if you don't want to create it yourself. Bicep template creates a token for you with pull permission to all repositories. <br />
-Create a token resource in the ACR craeted in the bicep deployment. Take a note of the username and password. You can define the token scope yourself or use the default scopes. Make sure the scope covers the image you would use in the k8s deployment. It should have the permission to pull the requied image at least. <br />
-![HowToCreateAToken](https://raw.githubusercontent.com/Azure-Samples/azurearc-samples/main/201/screenshots/Token.png)
-* Generate the ACR credential 
+Create a token resource in the ACR created in the bicep deployment. Take a note of the username and password. You can define the token scope yourself or use the default scopes. Make sure the scope covers the image you would use in the k8s deployment. It should have the permission to pull the requied image at least. <br />
+![HowToCreateAToken](https://raw.githubusercontent.com/Azure-Samples/azurearc-samples/main/201/screenshots/Token.png) <br />
+* Generating password for ACR token, either using portal or command <br />
+![HowToGeneratePwd](https://raw.githubusercontent.com/Azure-Samples/azurearc-samples/main/201/screenshots/Pwd.png) <br />
+```
+$acrName = "{ACRName}" # Created in bicep
+$tokenName = "{TokenName}" # Created in bicep or created yourself
+$passwords = az acr token credential generate --registry $acrName --name $tokenName | ConvertFrom-Json
+```
+After generating the paswword, Generate the ACR credential <br />
+
 ```json
 {"auths":{"ACR_URI":{"auth":"Base64(USERNAME:PASSWORD)"}}}
 ```
@@ -65,11 +73,10 @@ docker push $imageTag
 ```
 replicaCount: 1 # Optional
 image:
-  repository: nginx # Required, change it to the image you pushed to ACR, like sample.azurecr.io/samplerepo
+  repository: "fill in image repository" # Required, change it to the image you pushed to ACR, like sample.azurecr.io/samplerepo
   pullPolicy: IfNotPresent # Optional
-  tag: "" # Required, change it to the image version, like latest
+  tag: "fill in image tag" # Required, change it to the image version, like latest
 
-imagePullSecrets: [] # Optional
 nameOverride: ""  # Optional
 fullnameOverride: ""  # Optional
 
