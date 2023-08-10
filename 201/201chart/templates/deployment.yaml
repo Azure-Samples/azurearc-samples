@@ -1,0 +1,35 @@
+# This is a sample pod definition for using SecretProviderClass and service principal to access Keyvault
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: busybox-secrets-store-inline
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "201chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "201chart.selectorLabels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+      - name: credentialforacr
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "akvprovider-acr-test"
+          nodePublishSecretRef:
+            name: {{ .Values.secretName }}
+
+

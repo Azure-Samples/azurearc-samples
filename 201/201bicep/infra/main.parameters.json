@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "ArcK8sName": {
+        "value": "fill in Arc enabled kubernetes name"
+      },
+      "location": {
+        "value": "fill in location of Arc enabled kubernetes cluster"
+      },
+      "VaultName": {
+        "value": "fill in the name of key vault"
+      },
+      "appid": {
+        "value": "fill in the application id of service principal"
+      },
+      "objid": {
+        "value": "fill in the object id of service principal"
+      },
+      "acrName": {
+        "value": "fill in the name of Azure container registry where hold images"
+      },
+      "tokenName": {
+        "value": "fill in the name of ACR token"
+      }
+    }
+  }
+  
