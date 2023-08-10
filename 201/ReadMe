@@ -3,7 +3,7 @@
 
 This sample shows you how to use utilize Azure Key Vault, Azure Container Registry and Azure Arc enabled Key Vault Extension to dynamically pull ACR credentials from AKV and pull image from ACR.
 ## Prerequisites
-* Compatible cluster
+* Compatible cluster, aks and aks ee is recommended 
 * <a href = "https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/reference">AZD</a>
 
 ## Steps
