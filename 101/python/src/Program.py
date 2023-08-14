@@ -1,7 +1,8 @@
-# This is a python code sample that counts from 0 to 100
+# This is a python code sample that counts from 0 to infinite
 import time
 
-while true:
+i = 0
+while True:
     print(i)
     time.sleep(1.0)
     i += 1
