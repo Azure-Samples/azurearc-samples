@@ -5,10 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: <your image repo>
+  fullImageName: ""
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""

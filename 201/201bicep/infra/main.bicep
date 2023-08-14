@@ -8,8 +8,6 @@ param SampleResourceGroup string
 @description('location of SampleResourceGroup')
 param SampleResourceLocation string
 
-@description('The appid of service principal to grant keyvault access')
-param appid string
 @description('The objid of service principal to grant keyvault access')
 param objid string
 
@@ -42,7 +40,6 @@ module resources 'resource.bicep' = {
   params: {
     SampleResourceLocation: SampleResourceLocation
     VaultName: VaultName
-    appid: appid
     objid: objid
     acrName: acrName
     tokenName: tokenName

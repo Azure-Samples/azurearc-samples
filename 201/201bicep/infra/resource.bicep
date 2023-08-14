@@ -3,8 +3,6 @@
 @description('location of SampleResourceGroup')
 param SampleResourceLocation string
 
-@description('The appid of service principal to grant keyvault access')
-param appid string
 @description('The objid of service principal to grant keyvault access')
 param objid string
 
@@ -72,7 +70,6 @@ resource keyvaultadd 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
   properties: {
     accessPolicies: [
       {
-        applicationId: appid
         objectId: objid
         permissions: {
           secrets: [

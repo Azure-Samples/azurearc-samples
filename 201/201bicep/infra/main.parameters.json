@@ -3,35 +3,28 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "ArcK8sName": {
-        "value": "fill in Arc enabled kubernetes name"
+        "value": ""
       },
       "ClusterResourceGroup": {
-        "value": "fill in resource group of Arc enabled kubernetes cluster"
-      },
-      "ArcK8sResourceGroup": {
-        "value": "fill in the resource group of Arc enabled kubernetes cluster"
+        "value": ""
       },
       "SampleResourceGroup": {
-        "value": "ArcKeyVault"
+        "value": ""
       },
       "SampleResourceLocation": {
-        "value": "fill in location of resource group of sample resources"
+        "value": ""
       },
       "VaultName": {
-        "value": "fill in the name of key vault"
-      },
-      "appid": {
-        "value": "fill in the application id of service principal"
+        "value": ""
       },
       "objid": {
-        "value": "fill in the object id of service principal"
+        "value": ""
       },
       "acrName": {
-        "value": "fill in the name of Azure container registry where hold images"
+        "value": ""
       },
       "tokenName": {
-        "value": "fill in the name of ACR token"
+        "value": ""
       }
     }
-  }
-  
+}
