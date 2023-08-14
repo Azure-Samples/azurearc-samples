@@ -5,8 +5,17 @@
       "ArcK8sName": {
         "value": "fill in Arc enabled kubernetes name"
       },
-      "location": {
-        "value": "fill in location of Arc enabled kubernetes cluster"
+      "ClusterResourceGroup": {
+        "value": "fill in resource group of Arc enabled kubernetes cluster"
+      },
+      "ArcK8sResourceGroup": {
+        "value": "fill in the resource group of Arc enabled kubernetes cluster"
+      },
+      "SampleResourceGroup": {
+        "value": "ArcKeyVault"
+      },
+      "SampleResourceLocation": {
+        "value": "fill in location of resource group of sample resources"
       },
       "VaultName": {
         "value": "fill in the name of key vault"
