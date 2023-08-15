@@ -2,7 +2,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: busybox-secrets-store-inline
+  name: arc-kv-sample
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -17,7 +17,8 @@ spec:
       - name: credentialforacr
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.image.fullImageName }}"
+        command: ["bash", "-c", "echo Sleep tight! && sleep 3600"]
         volumeMounts:
         - name: secrets-store-inline
           mountPath: "/mnt/secrets-store"
@@ -31,5 +32,3 @@ spec:
             secretProviderClass: "akvprovider-acr-test"
           nodePublishSecretRef:
             name: {{ .Values.secretName }}
-
-

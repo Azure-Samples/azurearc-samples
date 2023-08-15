@@ -5,15 +5,13 @@
 replicaCount: 1
 
 image:
-  repository: "fill in image repository"
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "fill in image tag"
+  fullImageName: "" 
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
 
-keyvaultName: "fill in the key vault name"
-keyvaultSecretName: "fill in the secret name in key vault"
-secretName: "fill in the secret name generated using 'kubectl create secret' command"
-tenantId: "fill in the tenant id of subscription"
+keyvaultName: ""
+keyvaultSecretName: ""
+secretName: "secrets-store-creds"
+tenantId: ""
