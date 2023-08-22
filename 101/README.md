@@ -5,6 +5,7 @@ This sample guides you through the full development flow. Follow this README to 
 - Visual Studio Code with [Azure Arc Extension](https://marketplace.visualstudio.com/search?term=azure%20arc&target=VSCode&category=All%20categories&sortBy=Relevance) from VS code marketplace installed to simplify some development steps
 - Docker desktop or other containerization engine
 - A Kubernetes cluster. If you don't already have one, you can use the Azure Arc VS code extension to create an AKS EE cluster.
+- [Helm](https://helm.sh/docs/intro/install/) installed on your dev machine.
 
 ## Building
 The same sample is implemented in 3 languages, build the corresponding Dockerfile to deploy to your K8S cluster.
@@ -14,7 +15,7 @@ The same sample is implemented in 3 languages, build the corresponding Dockerfil
     docker login docker.io/<your username> -u <your username>
     ```
 
-2. Determine your image repository for the build process. If you're using docker.io as your container registry, the image repo should be in this format:
+2. Determine your image repository for the build process. If you're using docker.io as your container registry, the image fullname should be in this format:
     ```powershell
     docker.io/<your username>/<your repo name>
     ```
@@ -27,12 +28,12 @@ The same sample is implemented in 3 languages, build the corresponding Dockerfil
 
 3. Build your docker image and push to a container registry
     - If the Azure Arc VS code extension is installed, you can:
-        - Right click on the Dockerfile you selected and click on "Arc Extension: Build docker images" and specify your image repo. Or
-        - In VS Code, press "F1" or "Ctrl+Shift+P" to bring up the command palette and select "Arc Extension: Build docker images", specify your image repo and select the Dockerfile to build from the menu.
+        - Right click on the Dockerfile you selected and click on "Arc Extension: Build docker images" and specify your image full name. Or
+        - In VS Code, press "F1" or "Ctrl+Shift+P" to bring up the command palette and select "Arc Extension: Build docker images", specify your image full name and select the Dockerfile to build from the menu.
     - If you prefer the command line option, use the following commands:
     ```powershell
-    docker build -t <image repo>:<tag> -f <dockerfile path> <source code path>
-    docker push <image repo>:<tag>
+    docker build -t <image fullname>:<tag> -f <dockerfile path> <source code path>
+    docker push <image fullname>:<tag>
     ```
 
     for example:

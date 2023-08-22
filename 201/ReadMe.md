@@ -11,6 +11,7 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
 ### Required
 - A native K8S cluster connected to Arc. The Azure Arc VS code extension can help to create an AKS EE cluster and connect to Arc if needed.
 - [AZS CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/reference)
+- [Helm](https://helm.sh/docs/intro/install/)
 
 
 ### Recommended
