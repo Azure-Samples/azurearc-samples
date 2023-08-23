@@ -28,9 +28,9 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
   
     Please take note of the Client ID (a.k.a., App ID), tenantID, service principal object ID and Client Secret generated in this step.
 
-2. Use the client ID and client secret as plain text from the first step to create a Kubernetes secret on the connected cluster:
+2. Use the client ID and client secret **value** as plain text from the first step to create a Kubernetes secret on the connected cluster.
     ```
-    kubectl create secret generic secrets-store-creds --from-literal clientid="<client-id>" --from-literal clientsecret="<client-secret>"
+    kubectl create secret generic secrets-store-creds --from-literal clientid="<client-id>" --from-literal clientsecret="<client secret value>"
     ```
 
 3. Create a label from the created secret:
@@ -41,6 +41,16 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
 4. Create Azure and Arc denependencies such as Azure KeyVault (AKV) with access policy, Azure Container Registry (ACR) with access token, and Arc-enabled KeyVault extension.
     - **Recommended**: use bicep included in the sample to automatically create all Azure and Arc resources. To do that, fill out the [main.parameters.json](.\201bicep\infra\main.parameters.json) file and deploy the bicep template using the below command in the 201bicep folder and follow the prompt to create an environment name, select a subscription/location and so on. Please note that some resource names in main.parameters.json must be globally unique.
 
+        NOTE: the objid value is the service principal object Id, not the application object Id. There're two ways to properly retrieve this Id:    
+        - **Recommended**: using AZ CLI, specify the display name of the service principal
+            ```powershell
+            (az ad sp list --display-name <SP display name> | ConvertFrom-Json).id
+            ```
+        
+        - Using Azure Portal <br/>
+        Navigate to **Enterprise Application** (a.k.a., service principal) and locate your service principal, in the overview tab make a copy of the Object ID field. It is important to NOT confuse with **App regsitrations** (a.k.a., applications).
+            
+
       | Properties | Descriptions |
       |-|-|
       | ArcK8sName | Arc-enabled cluster name |
@@ -48,7 +58,7 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
       | SampleResourceGroup | Resource group to manage sample resources |
       | SampleResourceLocation | Sample resource location, must be one of the locations available from Azure |
       | VaultName | The name of the Azure KeyVault |
-      | objid | The object Id of the service principal. Note: this is not the same as the object id of the application | 
+      | objid | The object Id of the service principal.|
       | acrName | The name of the Azure Container Registry (ACR) |
       | tokenName | The name of the ACR token that allows pulling images from the K8S cluster |
 
@@ -82,7 +92,8 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
       $password = "<password retrieved from the previous step>"
       $acrName = "<your ACR name>"
 
-      $acrUrl = "$acrName.azurecr.io"
+      # The ACR URL from the credential generated must be the same as the full image name. Convert to all lower case to be safe.
+      $acrUrl = "$($acrName.ToLower()).azurecr.io"
       $stringInBytes = [System.Text.Encoding]::UTF8.GetBytes("$tokenName`:$password")
       $stringEncoded = [System.Convert]::ToBase64String($stringInBytes)
       $credential = "{`"auths`":{`"$acrUrl`":{`"auth`":`"$stringEncoded`"}}}"
@@ -94,22 +105,50 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
       {"auths":{"sample.azurecr.io":{"auth":"dXNlcm5hbWU6cGFzc3dvcmQ="}}}
       ```
 
-7. Save the ACR credential as a secret to the AKV created in bicep deployment. You may need to assign yourself access policies in order to create secrets. Take note of the secret name. <br />
+7. Save the whole json string generated in the previous step as a secret to the AKV created in bicep deployment. You may need to assign yourself access policies in order to create secrets. Take note of the secret name. <br />
 ![HowToCreateASecret](https://raw.githubusercontent.com/Azure-Samples/azurearc-samples/main/201/screenshots/KV.png)
 
 8. Push an image to the ACR
     > Note: the credential created in the previous step is based on the token that has '_repositories_pull' privilege as defined in [resource.bicep](.\201bicep\infra\resource.bicep) and is intended for the on-prem K8S cluster to pull images from the ACR. To push an image to the ACR you might need to login using your own Azure credentials, or enable Azure KeyVault admin user to login.
 
-    Make sure you've logged in to the ACR with a user that has push privilege.
-    ```powershell
-    docker login $acrUrl -u <privileged user> -p <privileged user password>
-    ```    
+    Make sure you've logged in to the ACR with a user that has push privilege. There're two alternatives to login:
+
+    - **Recommended**: using your Azure credentials
+        ```powershell
+        az login
+        az acr login --name <acrName>
+        ```
+
+    - Using ACR admin account <br/>
+        Follow the [instructions](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication?tabs=azure-cli#admin-account) to enable ACR admin account, and login with the admin user credentials found from Azure portal.
+
+        ```powershell
+        docker login $acrUrl -u <admin username> -p <admin user password>
+        ```
+
+        There will be some security warnings about using passwords to login, which is why Azure credentials is recommended. However, it won't affect functionalities using the ACR so you can ignore that from the time being.
     
-    Make sure your docker engine is running. The following commands pulls a hello-world image from docker.io and push to ACR. You can safely ignore any warnings you see during this process.
+    Make sure your docker engine is running. A typical full image name looks like this
+    
+    ```
+    sample.azurecr.io/samplerepo/ubuntu:latest
+    ```
+
+    To illustrate the terminology used in the rest of the sample with the example full image name above:
+    | Segment | Descrpition | 
+    |-|-|
+    | sample | The ACR name in lower case, used to identify your ACR resource on Azure |
+    | sample.azurecr.io | The ACR URL, the endpoint of ACR |
+    | samplerepo | The repository name, ACR supports fine-grain access control at the repository level, so it is recommended to push your images under repositories |
+    | ubuntu | The image name |
+    | latest | The image tag. It can be almost any string you decide, and the most common use of image tag is to indicate different versions of your image. The "latest" tag is created automatically even if you don't specify a tag. |
+    
+    The following commands pulls a hello-world image from docker.io and push to ACR.
 
     ```powershell
     # e.g., sample.azurecr.io/samplerepo/ubuntu:latest 
-    $imageName = "$acrUrl/<repositoryName>/ubuntu`:latest" 
+    $repositoryName = "<your repo name>"
+    $imageName = "$acrUrl/$repositoryName/ubuntu`:latest" 
     docker pull ubuntu:latest
     docker tag ubuntu:latest $imageName
     docker push $imageName
@@ -119,7 +158,7 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
 
     | Properties | Descriptions |
     |-|-|
-    | imageName | Full image name, e.g., sample.azurecr.io/samplerepo/helloworld:latest |
+    | imageName | Full image name that must match the casing of the credential generated in step 6. To be safe, convert the full image name to all lower case, e.g., sample.azurecr.io/samplerepo/ubuntu:latest |
     | keyvaultName | The KeyVault name |
     | keyvaultSecretName | The secret name that contains ACR credentials in the KeyVault |
     | tenantId | The tenant id of subscription |
@@ -150,7 +189,7 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
     ```
 
 ## Validation
-A pod with prefix "101chart" should be running in default namespace. Check your pod status with:
+A pod with prefix "201chart" should be running in default namespace. Check your pod status with:
 ```bash
 kubectl get pods
 ```
