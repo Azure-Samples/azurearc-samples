@@ -2,8 +2,6 @@ from azure.identity import DefaultAzureCredential
 from azure.mgmt.kubernetesconfiguration import SourceControlConfigurationClient
 
 class ArcEnabledExtensionHelper:
-    # A class with 6 string fields and four functions
-
     def __init__(self, subscriptionId, resourceGroupName, clusterName, extensionName):
         # The constructor method that initializes the fields
         self.subscriptionId = subscriptionId
@@ -93,29 +91,29 @@ ext = helper.Create_CreateExtension(definition)
 print(f"Created extension: {ext.name}, Type: {ext.extension_type}, Provisioning Status: {ext.provisioning_state}, Configuration:" )
 print(ext.configuration_settings)
 
-# # Get extension
-# ext = helper.Get_GetExtension()
-# print(f"Found extension: {ext.name}, Type: {ext.extension_type}, Provisioning Status: {ext.provisioning_state}, Configuration:" )
-# print(ext.configuration_settings)
+# Get extension
+ext = helper.Get_GetExtension()
+print(f"Found extension: {ext.name}, Type: {ext.extension_type}, Provisioning Status: {ext.provisioning_state}, Configuration:" )
+print(ext.configuration_settings)
 
-# # Update extension
-# patch = {
-#             "properties": {
-#                 "configurationSettings": {
-#                     "secrets-store-csi-driver.rotationPollInterval": "15m",
-#                 },
-#             }
-#         }
-# ext = helper.Update_UpdateExtension(patch)
-# print(f"Updated extension: {ext.name}, Type: {ext.extension_type}, Provisioning Status: {ext.provisioning_state}, Configuration:" )
-# print(ext.configuration_settings)
+# Update extension
+patch = {
+            "properties": {
+                "configurationSettings": {
+                    "secrets-store-csi-driver.rotationPollInterval": "15m",
+                },
+            }
+        }
+ext = helper.Update_UpdateExtension(patch)
+print(f"Updated extension: {ext.name}, Type: {ext.extension_type}, Provisioning Status: {ext.provisioning_state}, Configuration:" )
+print(ext.configuration_settings)
 
-# # List extension
-# exts = helper.List_ListExtension()
-# for ext in exts:
-#     print(f"Found extension: {ext.name}, Type: {ext.extension_type}, Provisioning Status: {ext.provisioning_state}, Configuration:" )
-#     print(ext.configuration_settings)
+# List extension
+exts = helper.List_ListExtension()
+for ext in exts:
+    print(f"Listed extension: {ext.name}, Type: {ext.extension_type}, Provisioning Status: {ext.provisioning_state}, Configuration:" )
+    print(ext.configuration_settings)
 
-# # Delete extension
-# ext = helper.Delete_DeleteExtension()
-# print(f"successfully deleted extension: {extensionName}")
+# Delete extension
+ext = helper.Delete_DeleteExtension()
+print(f"Successfully deleted extension: {extensionName}")
