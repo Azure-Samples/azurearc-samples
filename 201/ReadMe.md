@@ -39,7 +39,7 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
     ```
 
 4. Create Azure and Arc denependencies such as Azure KeyVault (AKV) with access policy, Azure Container Registry (ACR) with access token, and Arc-enabled KeyVault extension.
-    - **Recommended**: use bicep included in the sample to automatically create all Azure and Arc resources. To do that, fill out the [main.parameters.json](.\201bicep\infra\main.parameters.json) file and deploy the bicep template using the below command in the 201bicep folder and follow the prompt to create an environment name, select a subscription/location and so on. Please note that some resource names in main.parameters.json must be globally unique.
+    - **Recommended**: use bicep included in the sample to automatically create all Azure and Arc resources. To do that, fill out the [main.parameters.json](.\201bicep\infra\main.parameters.json) file and deploy the bicep template using the below command in the 201bicep folder and follow the prompt to create an environment name, select a subscription/location and so on. Please note that some resource names in main.parameters.json must be globally unique. *If you need to rerun bicep file, be aware that the accessPolicies in key vault and the token passwords in Azure container registry may be reset. Please double check before preceeding to the next step.*
 
         NOTE: the objid value is the service principal object Id, not the application object Id. There're two ways to properly retrieve this Id:    
         - **Recommended**: using AZ CLI, specify the display name of the service principal
