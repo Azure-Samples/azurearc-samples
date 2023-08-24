@@ -32,10 +32,6 @@ resource token 'Microsoft.ContainerRegistry/registries/tokens@2023-01-01-preview
   name: tokenName
   parent: acr
   properties: {
-    credentials: {
-      passwords: [
-      ]
-    }
     scopeMapId: scope.id
   }
 }
@@ -43,30 +39,6 @@ resource token 'Microsoft.ContainerRegistry/registries/tokens@2023-01-01-preview
 resource vault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
   name: VaultName
   location: SampleResourceLocation
-  properties: {
-    accessPolicies:[]
-    enableRbacAuthorization: false
-    enableSoftDelete: true
-    softDeleteRetentionInDays: 90
-    enabledForDeployment: false
-    enabledForDiskEncryption: false
-    enabledForTemplateDeployment: false
-    tenantId: subscription().tenantId
-    sku: {
-      name: 'standard'
-      family: 'A'
-    }
-    networkAcls: {
-      defaultAction: 'Allow'
-      bypass: 'AzureServices'
-    }
-  }
-}
-
-// Grant accessPolicy of KeyVault to application
-resource keyvaultadd 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
-  parent: vault
-  name: 'add'
   properties: {
     accessPolicies: [
       {
@@ -80,5 +52,10 @@ resource keyvaultadd 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
         tenantId: subscription().tenantId
       }
     ]
+    tenantId: subscription().tenantId
+    sku: {
+      name: 'standard'
+      family: 'A'
+    }
   }
 }
