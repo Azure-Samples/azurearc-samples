@@ -177,15 +177,28 @@ Arc-Enabled KeyVault is an Arc extension that can be deployed to Arc-enabled clu
     helm ls
     ```
 
-    and remove the installation with:
+    and (Recommended) upgrade the installation with:
+
+    ```bash
+    helm upgrade <char name> <char repo>
+    ```
+
+    or remove the installation and install again with:
 
     ```bash
     helm uninstall <char name>
+    helm install <chat repo> --generate-name
     ```
 
     For example:
     ```bash
+    helm upgrade 201chart-1692064686 .\201\201chart
+    ```
+    or
+
+    ```bash
     helm uninstall 201chart-1692064686 
+    helm install .\201\201chart\ --generate-name
     ```
 
 ## Validation
