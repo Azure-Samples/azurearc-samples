@@ -32,6 +32,7 @@ The same sample is implemented in 3 languages, build the corresponding Dockerfil
     - If the Azure Arc VS code extension is installed, you can:
         - Right click on the Dockerfile you selected and click on "Arc Extension: Build docker images" and specify your image full name. Or
         - In VS Code, press "F1" or "Ctrl+Shift+P" to bring up the command palette and select "Arc Extension: Build docker images", specify your image full name and select the Dockerfile to build from the menu.
+        ![CommandPalette](https://raw.githubusercontent.com/Azure-Samples/azurearc-samples/main/101/screenshots/CommandPalette.png)
     - If you prefer the command line option, use the following commands:
     ```powershell
     docker build -t <image fullname>:<tag> -f <dockerfile path> <source code path>
